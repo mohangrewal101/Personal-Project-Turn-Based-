@@ -1,0 +1,73 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6213907280827641890
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6213907280827641888}
+  - component: {fileID: 6213907280827641891}
+  m_Layer: 0
+  m_Name: BattleSystem
+  m_TagString: BattleSystem
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6213907280827641888
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6213907280827641890}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -5.231038, y: -0.88615537, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6213907280827641891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6213907280827641890}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a02949a0202dd9d4291243dff67d92c8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hasPlayerAttacked: 0
+  hasEnemyAttacked: 0
+  playerUnit: {fileID: 0}
+  enemyUnit: {fileID: 0}
+  magicOptions: {fileID: 0}
+  playerPrefab: {fileID: 3814467996238142113, guid: e081d1cdc4d7a9447812caeb956b4285,
+    type: 3}
+  enemyPrefab: {fileID: 7150155183801097796, guid: e060c4d6c48cfb645b658c56cdccfd35,
+    type: 3}
+  magicOptionsPrefab: {fileID: 5498561254732300859, guid: a4d132edb56e51f4babcbb0183b49d96,
+    type: 3}
+  itemOptionsPrefab: {fileID: 8268176177334114694, guid: c5c4b41d6b8a6384ea21f24917903d93,
+    type: 3}
+  itemButtonPrefab: {fileID: 7982946619786148392, guid: dba6ee17ccd1e0e438b035ccbad58b04,
+    type: 3}
+  attackButton: {fileID: 0}
+  magicButton: {fileID: 0}
+  itemButton: {fileID: 0}
+  playerBattleStation: {fileID: 0}
+  enemyBattleStation: {fileID: 0}
+  magicBattleStation: {fileID: 0}
+  itemBattleStation: {fileID: 0}
+  state: 0
+  dialogueText: {fileID: 0}
+  playerHUD: {fileID: 0}
+  enemyHUD: {fileID: 0}
+  choosingTiles: {fileID: 0}
+  enemyChoosingTiles: {fileID: 0}
