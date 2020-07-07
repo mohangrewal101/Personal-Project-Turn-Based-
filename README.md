@@ -1,6 +1,5 @@
 # Personal-Project-Turn-Based-
-Turn-based project, that I am working on by myself
-
+Turn-based project, based in Unity
 NOTES:
 
 General:
