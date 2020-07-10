@@ -112,7 +112,7 @@ public class EnemyChoosingTiles : MonoBehaviour
     {
         Vector3Int tilePosition = playerChoosingTiles.playerTilePosition;
         Transform enemyPosition = GameObject.Find("EnemyBattleStation").transform.FindChild("Skeleton(Clone)").transform;
-        Transform playerPosition = GameObject.Find("PlayerBattleStation").transform.FindChild("Player(Clone)").transform;
+        Transform playerPosition = GameObject.Find("PlayerBattleStation").transform.FindChild("Player1(Clone)").transform;
         if (Mathf.Round(Mathf.Abs(enemyTilePosition.x - playerChoosingTiles.playerTilePosition.x)) > 1)
         {
             if (Mathf.Round(enemyPosition.position.x) < Mathf.Round(playerPosition.position.x))

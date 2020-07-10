@@ -119,7 +119,7 @@ public class BattleSystem : MonoBehaviour
     {
         playerGO = Instantiate(playerPrefab, playerBattleStation); //playerPrefab is a child of the playerBattleStation
         playerInventory = playerGO.GetComponent<PlayerInventory>();
-        playerUnit = playerGO.GetComponent<UnitScript>();
+        playerUnit = playerGO.transform.GetChild(0).GetComponent<UnitScript>();
         enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
         enemyUnit = enemyGO.transform.GetChild(0).GetComponent<UnitScript>();
         dialogueText.text = enemyUnit.unitName + " is coming to attack!!!";
@@ -127,13 +127,13 @@ public class BattleSystem : MonoBehaviour
         playerHUD.SetHUD(playerUnit);
         enemyHUD.SetHUD(enemyUnit);
         enemyUItext = GameObject.Find("EnemyBattleStation").transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
-        playerUItext = GameObject.Find("PlayerBattleStation").transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<Text>();
+        playerUItext = GameObject.Find("PlayerBattleStation").transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
         enemyUItext.text = "";
         playerUItext.text = "";
         enemyAnim = GameObject.Find("EnemyBattleStation").transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Animator>();
-        playerAnim = GameObject.Find("PlayerBattleStation").transform.GetChild(0).GetChild(0).GetComponent<Animator>();
+        playerAnim = GameObject.Find("PlayerBattleStation").transform.GetChild(0).GetChild(0).GetChild(0).GetComponent<Animator>();
         enemyUItextFadeOut = GameObject.Find("EnemyBattleStation").transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<TextFadeOut>();
-        playerUItextFadeOut = GameObject.Find("PlayerBattleStation").transform.GetChild(0).GetChild(1).GetChild(0).GetComponent<TextFadeOut>();
+        playerUItextFadeOut = GameObject.Find("PlayerBattleStation").transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<TextFadeOut>();
         state = BattleState.PLAYERTURN;
 
         yield return new WaitForSeconds(2f);
@@ -241,14 +241,14 @@ public class BattleSystem : MonoBehaviour
         isEnemyAttacking = true;
         if (Mathf.Abs(choosingTiles.playerTilePosition.x - enemyChoosingTiles.enemyTilePosition.x) > enemyUnit.meleeRange)
         {
-            dialogueText.text = enemyUnit.unitName = "Enemy misses!";
+            dialogueText.text = enemyUnit.name + " misses!";
             playerUItext.text = "MISS";
             playerUItextFadeOut.FadeOut();
 
         }
         else
         {
-            dialogueText.text = enemyUnit.unitName = "Enemy attacks!";
+            dialogueText.text = enemyUnit.name + " attacks!";
             isDead = playerUnit.TakeDamage(enemyUnit.damage);
             playerAnim.SetTrigger("hit");
             playerUItext.text = "HIT";

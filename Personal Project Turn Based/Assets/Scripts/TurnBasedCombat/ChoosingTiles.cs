@@ -74,6 +74,21 @@ public class ChoosingTiles : MonoBehaviour
         if (!playerHasMovedToHighlightedTile)
         isFacingWrongWay = false;
         playerTransform.Rotate(0.0f, 180.0f, 0.0f);
+        GameObject child = GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).GetChild(0).GetChild(0).gameObject;
+        GameObject child2 = GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).GetChild(0).GetChild(1).gameObject;
+        GameObject child3 = GameObject.FindGameObjectWithTag("Player").transform.GetChild(0).GetChild(1).gameObject;
+
+        Vector3 childScale = child.transform.localScale; //switches back UI
+        childScale.x *= -1;
+        child.transform.localScale = childScale;
+
+        Vector3 childScale2 = child2.transform.localScale; //switches back UI
+        childScale2.x *= -1;
+        child2.transform.localScale = childScale2;
+
+        Vector3 childScale3 = child3.transform.localScale; //switches back UI
+        childScale3.x *= -1;
+        child3.transform.localScale = childScale3;
     }
     void Update()
     {
