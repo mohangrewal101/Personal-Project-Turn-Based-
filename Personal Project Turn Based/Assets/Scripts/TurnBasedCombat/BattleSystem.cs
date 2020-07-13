@@ -72,7 +72,7 @@ public class BattleSystem : MonoBehaviour
     private Animator playerAnim;
     public BattleHudScript playerHUD;
     public BattleHudScript enemyHUD;
-    public ChoosingTiles choosingTiles;
+    public PlayerChoosingTiles playerChoosingTiles;
     public EnemyChoosingTiles enemyChoosingTiles;
     private PlayerInventory playerInventory;
 
@@ -153,18 +153,18 @@ public class BattleSystem : MonoBehaviour
     {
         playerAnim.SetBool("isPlayerAttacking", isPlayerAttacking);
         playerAnim.SetBool("isPlayerHealing", isPlayerHealing);
-        enemyAnim.SetBool("isenemyMovingToHighlightedTile", enemyChoosingTiles.isenemyMovingToHighlightedTile);
-        playerAnim.SetBool("isPlayerMovingToHighlightedTile", !choosingTiles.playerHasMovedToHighlightedTile);
+        enemyAnim.SetBool("isenemyMovingToHighlightedTile", enemyChoosingTiles.isEntityMovingToHighlightedTile);
+        playerAnim.SetBool("isPlayerMovingToHighlightedTile", !playerChoosingTiles.entityHasMovedToHighlightedTile);
         enemyAnim.SetBool("isEnemyAttacking", isEnemyAttacking);
     }
 
     public IEnumerator PlayerHeal()
     {
         DisableButtons();
-        if (Mathf.Round(Mathf.Abs(choosingTiles.playerTilePosition.x - enemyChoosingTiles.enemyTilePosition.x)) > 1 || choosingTiles.playerTilePosition != choosingTiles.highlightedTilePosition)
-            choosingTiles.playerHasMovedToHighlightedTile = false;
+        if (Mathf.Round(Mathf.Abs(playerChoosingTiles.entityTilePosition.x - enemyChoosingTiles.entityTilePosition.x)) > 1 || playerChoosingTiles.entityTilePosition != playerChoosingTiles.highlightedTilePosition)
+            playerChoosingTiles.entityHasMovedToHighlightedTile = false;
         hasPlayerAttacked = false;
-        yield return new WaitUntil(() => choosingTiles.playerHasMovedToHighlightedTile == true);
+        yield return new WaitUntil(() => playerChoosingTiles.entityHasMovedToHighlightedTile == true);
         isPlayerHealing = true;
 
         yield return new WaitForSeconds(1.1f);
@@ -172,7 +172,7 @@ public class BattleSystem : MonoBehaviour
         playerHUD.SetHP(playerUnit.currentHP);
         dialogueText.text = "You used ancient arts to heal!";
 
-        choosingTiles.mouseButtonPressed = false;
+        playerChoosingTiles.mouseButtonPressed = false;
         hasPlayerAttacked = true;
         yield return new WaitForSeconds(1.5f);
         isPlayerHealing = false;
@@ -184,13 +184,13 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator PlayerAttack()
     {
         DisableButtons();
-        if (Mathf.Round(Mathf.Abs(choosingTiles.playerTilePosition.x - enemyChoosingTiles.enemyTilePosition.x)) > 1 || choosingTiles.playerTilePosition != choosingTiles.highlightedTilePosition)
-            choosingTiles.playerHasMovedToHighlightedTile = false;
+        if (Mathf.Round(Mathf.Abs(playerChoosingTiles.entityTilePosition.x - enemyChoosingTiles.entityTilePosition.x)) > 1 || playerChoosingTiles.entityTilePosition != playerChoosingTiles.highlightedTilePosition)
+            playerChoosingTiles.entityHasMovedToHighlightedTile = false;
         hasPlayerAttacked = false;
-        yield return new WaitUntil(() => choosingTiles.playerHasMovedToHighlightedTile == true);
+        yield return new WaitUntil(() => playerChoosingTiles.entityHasMovedToHighlightedTile == true);
         isPlayerAttacking = true;
         bool isDead = false;
-        if (Mathf.Abs(choosingTiles.playerTilePosition.x - enemyChoosingTiles.enemyTilePosition.x) > playerUnit.meleeRange)
+        if (Mathf.Abs(playerChoosingTiles.entityTilePosition.x - enemyChoosingTiles.entityTilePosition.x) > playerUnit.meleeRange)
         {
             dialogueText.text = "The attack fails!";
             enemyUItext.text = "MISS";
@@ -208,7 +208,7 @@ public class BattleSystem : MonoBehaviour
 
         enemyHUD.SetHP(enemyUnit.currentHP);
         hasPlayerAttacked = true;
-        choosingTiles.mouseButtonPressed = false;
+        playerChoosingTiles.mouseButtonPressed = false;
 
         yield return new WaitForSeconds(0.7f);
         isPlayerAttacking = false;
@@ -232,14 +232,14 @@ public class BattleSystem : MonoBehaviour
 
     public IEnumerator EnemyTurn()
     {
-        enemyChoosingTiles.isenemyMovingToHighlightedTile = true;
-        enemyChoosingTiles.enemyHasMovedToHighlightedTile = false;
+        enemyChoosingTiles.isEntityMovingToHighlightedTile = true;
+        enemyChoosingTiles.entityHasMovedToHighlightedTile = false;
         hasEnemyAttacked = false;
         
-        yield return new WaitUntil(() => enemyChoosingTiles.enemyHasMovedToHighlightedTile == true);
+        yield return new WaitUntil(() => enemyChoosingTiles.entityHasMovedToHighlightedTile == true);
         bool isDead = false;
         isEnemyAttacking = true;
-        if (Mathf.Abs(choosingTiles.playerTilePosition.x - enemyChoosingTiles.enemyTilePosition.x) > enemyUnit.meleeRange)
+        if (Mathf.Abs(playerChoosingTiles.entityTilePosition.x - enemyChoosingTiles.entityTilePosition.x) > enemyUnit.meleeRange)
         {
             dialogueText.text = enemyUnit.name + " misses!";
             playerUItext.text = "MISS";
@@ -319,27 +319,18 @@ public class BattleSystem : MonoBehaviour
         PlayerHeal();
     }
 
-/*    public void OnFireButton()
-    {
-        if (state != BattleState.PLAYERTURN)
-        {
-            return;
-        }
-        StartCoroutine(PlayerFire());
-    }*/
-
     public IEnumerator PlayerFire()
     {
         DisableButtons();
         MagicAttacks firemagicAttack = GameObject.Find("Fire").GetComponent<MagicAttacks>();
-        if (Mathf.Round(Mathf.Abs(choosingTiles.playerTilePosition.x - enemyChoosingTiles.enemyTilePosition.x)) > 1 || choosingTiles.playerTilePosition != choosingTiles.highlightedTilePosition)
-            choosingTiles.playerHasMovedToHighlightedTile = false;
+        if (Mathf.Round(Mathf.Abs(playerChoosingTiles.entityTilePosition.x - enemyChoosingTiles.entityTilePosition.x)) > 1 || playerChoosingTiles.entityTilePosition != playerChoosingTiles.highlightedTilePosition)
+            playerChoosingTiles.entityHasMovedToHighlightedTile = false;
         hasPlayerAttacked = false;
 
-        yield return new WaitUntil(() => choosingTiles.playerHasMovedToHighlightedTile == true);
+        yield return new WaitUntil(() => playerChoosingTiles.entityHasMovedToHighlightedTile == true);
 
         bool isDead = false;
-        if (Mathf.Abs(choosingTiles.playerTilePosition.x - enemyChoosingTiles.enemyTilePosition.x) > playerUnit.magicRange)
+        if (Mathf.Abs(playerChoosingTiles.entityTilePosition.x - enemyChoosingTiles.entityTilePosition.x) > playerUnit.magicRange)
         {
             dialogueText.text = "The fire misses!";
             enemyUItext.text = "MISS";
@@ -358,7 +349,7 @@ public class BattleSystem : MonoBehaviour
         }
         enemyHUD.SetHP(enemyUnit.currentHP);
         hasPlayerAttacked = true;
-        choosingTiles.mouseButtonPressed = false;
+        playerChoosingTiles.mouseButtonPressed = false;
 
         yield return new WaitForSeconds(2f);
         enemyUItext.text = "";
@@ -378,8 +369,14 @@ public class BattleSystem : MonoBehaviour
             Destroy(magicOptions);
         }
     }
-    //MODIFIES: this
-    //EFFECTS: If in Player Turn battle state and itemOptions is null, instantiate itemOptionsPrefab and player items on to 
+
+    /// <summary>
+    /// UNFINISHED CODE FOR ITEMS IS BELOW
+    /// </summary>
+    /// 
+
+
+    //If in Player Turn battle state and itemOptions is null, instantiate itemOptionsPrefab and player items on to 
     // item battle station
     public void OnItemButton()
     {
@@ -397,9 +394,8 @@ public class BattleSystem : MonoBehaviour
         else Destroy(itemOptions);
     }
 
-    //REQUIRES: itemOptions to not be null
-    //MODIFIES: this
-    //EFFECTS: Instantiates the items in player's inventory on to the itemOptions
+
+    //Instantiates the items in player's inventory on to the itemOptions
     public void InstantiateItems()
     {
         if (playerInventory.inventoryItems.Capacity != 0)
@@ -417,9 +413,7 @@ public class BattleSystem : MonoBehaviour
         }
     }
 
-    //REQUIRES: InstantiateItems is called
-    //MODIFIES: this
-    //EFFECTS: Initiliazes how item will look like in unity
+    //Initiliazes how item will look like in unity
     public void IntiliazeItem(Item i, float unitsAway)
     {
         GameObject itemInOptions = Instantiate(itemButtonPrefab, itemBattleStation);

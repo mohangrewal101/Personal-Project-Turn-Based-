@@ -2713,11 +2713,32 @@ PrefabInstance:
       propertyPath: battleSystem
       value: 
       objectReference: {fileID: 219633589}
+    - target: {fileID: 1561935354969715952, guid: 00dd68707d5fdb6429f58a5c7e83218d,
+        type: 3}
+      propertyPath: opposingChoosingTiles
+      value: 
+      objectReference: {fileID: 1431271736}
+    - target: {fileID: 1561935354969715952, guid: 00dd68707d5fdb6429f58a5c7e83218d,
+        type: 3}
+      propertyPath: nonHighlightedTile
+      value: 
+      objectReference: {fileID: 11400000, guid: 9ca576e4e8d477d4ab4977e1cc2842bf,
+        type: 2}
+    - target: {fileID: 1561935354969715952, guid: 00dd68707d5fdb6429f58a5c7e83218d,
+        type: 3}
+      propertyPath: numberofTilesToMoveOn
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1561935354969715967, guid: 00dd68707d5fdb6429f58a5c7e83218d,
         type: 3}
       propertyPath: battleSystem
       value: 
       objectReference: {fileID: 219633589}
+    - target: {fileID: 1561935354969715967, guid: 00dd68707d5fdb6429f58a5c7e83218d,
+        type: 3}
+      propertyPath: opposingChoosingTiles
+      value: 
+      objectReference: {fileID: 1431271735}
     - target: {fileID: 1561935354969715953, guid: 00dd68707d5fdb6429f58a5c7e83218d,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -3022,6 +3043,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 7273083518646397242, guid: bea57c48cc6b1624f92ccce3a5f7eb22,
         type: 3}
+    - target: {fileID: 6213907280827641891, guid: 109cc4a7d1d9da841bd1bb3042237b6b,
+        type: 3}
+      propertyPath: playerChoosingTiles
+      value: 
+      objectReference: {fileID: 1431271735}
     - target: {fileID: 6213907280827641888, guid: 109cc4a7d1d9da841bd1bb3042237b6b,
         type: 3}
       propertyPath: m_LocalPosition.x

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class FireScript : MonoBehaviour
 {
-    private ChoosingTiles choosingTiles;
+    private PlayerChoosingTiles playerChoosingTiles;
     private bool canFlip;
     [HideInInspector]
     public bool hasFireCollided;
@@ -15,7 +15,7 @@ public class FireScript : MonoBehaviour
     void Start()
     {
         canFlip = true;
-        choosingTiles = GameObject.Find("Grid").GetComponent<ChoosingTiles>();
+        playerChoosingTiles = GameObject.Find("Grid").GetComponent<PlayerChoosingTiles>();
         fireTransform = GetComponent<Transform>();
         hasFireCollided = false;
     }
@@ -28,12 +28,12 @@ public class FireScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (choosingTiles.movementDirection == 1)
+        if (playerChoosingTiles.movementDirection == 1)
         {
             if (canFlip)
             Flip();
             fireTransform.Translate(-Vector2.right * fireSpeed * Time.deltaTime);
-        } else if (choosingTiles.movementDirection == -1)
+        } else if (playerChoosingTiles.movementDirection == -1)
         {
             fireTransform.Translate(-Vector2.right * fireSpeed * Time.deltaTime);
         }
