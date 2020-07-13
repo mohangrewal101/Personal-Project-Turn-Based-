@@ -11,7 +11,7 @@ General:
 - Everything else was drawn by me, including the tiles, Attack UI, Magic UI, Item UI, and Skeleton Stats UI
 
 Future Plans (in order of most importance to least important):
-- Organize code
+- Organize code (halfway finished)
 - Have the health bars at the top become small icons above player and enemy heads
 - Work on adding items to the player's inventory and making them usable during battle
 - Add post-processing and lighting effects
