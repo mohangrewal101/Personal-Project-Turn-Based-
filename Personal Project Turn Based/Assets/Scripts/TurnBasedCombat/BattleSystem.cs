@@ -70,8 +70,8 @@ public class BattleSystem : MonoBehaviour
 
     private Animator enemyAnim;
     private Animator playerAnim;
-    public BattleHudScript playerHUD;
-    public BattleHudScript enemyHUD;
+    private BattleHudScript playerHUD;
+    private BattleHudScript enemyHUD;
     public PlayerChoosingTiles playerChoosingTiles;
     public EnemyChoosingTiles enemyChoosingTiles;
     private PlayerInventory playerInventory;
@@ -118,13 +118,14 @@ public class BattleSystem : MonoBehaviour
     IEnumerator SetUpBattle()
     {
         playerGO = Instantiate(playerPrefab, playerBattleStation); //playerPrefab is a child of the playerBattleStation
-        playerInventory = playerGO.GetComponent<PlayerInventory>();
+        playerInventory = playerGO.transform.GetChild(0).GetComponent<PlayerInventory>();
         playerUnit = playerGO.transform.GetChild(0).GetComponent<UnitScript>();
         enemyGO = Instantiate(enemyPrefab, enemyBattleStation);
         enemyUnit = enemyGO.transform.GetChild(0).GetComponent<UnitScript>();
         dialogueText.text = enemyUnit.unitName + " is coming to attack!!!";
-
+        playerHUD = playerGO.transform.GetChild(2).GetComponent<BattleHudScript>();
         playerHUD.SetHUD(playerUnit);
+        enemyHUD = enemyGO.transform.GetChild(1).GetComponent<BattleHudScript>();
         enemyHUD.SetHUD(enemyUnit);
         enemyUItext = GameObject.Find("EnemyBattleStation").transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
         playerUItext = GameObject.Find("PlayerBattleStation").transform.GetChild(0).GetChild(0).GetChild(0).GetChild(1).GetComponent<Text>();
@@ -158,12 +159,17 @@ public class BattleSystem : MonoBehaviour
         enemyAnim.SetBool("isEnemyAttacking", isEnemyAttacking);
     }
 
-    public IEnumerator PlayerHeal()
+    void SetUpPlayerAttack()
     {
-        DisableButtons();
         if (Mathf.Round(Mathf.Abs(playerChoosingTiles.entityTilePosition.x - enemyChoosingTiles.entityTilePosition.x)) > 1 || playerChoosingTiles.entityTilePosition != playerChoosingTiles.highlightedTilePosition)
             playerChoosingTiles.entityHasMovedToHighlightedTile = false;
         hasPlayerAttacked = false;
+    }
+
+    public IEnumerator PlayerHeal()
+    {
+        DisableButtons();
+        SetUpPlayerAttack();
         yield return new WaitUntil(() => playerChoosingTiles.entityHasMovedToHighlightedTile == true);
         isPlayerHealing = true;
 
@@ -184,12 +190,11 @@ public class BattleSystem : MonoBehaviour
     public IEnumerator PlayerAttack()
     {
         DisableButtons();
-        if (Mathf.Round(Mathf.Abs(playerChoosingTiles.entityTilePosition.x - enemyChoosingTiles.entityTilePosition.x)) > 1 || playerChoosingTiles.entityTilePosition != playerChoosingTiles.highlightedTilePosition)
-            playerChoosingTiles.entityHasMovedToHighlightedTile = false;
-        hasPlayerAttacked = false;
+        SetUpPlayerAttack();
         yield return new WaitUntil(() => playerChoosingTiles.entityHasMovedToHighlightedTile == true);
         isPlayerAttacking = true;
         bool isDead = false;
+
         if (Mathf.Abs(playerChoosingTiles.entityTilePosition.x - enemyChoosingTiles.entityTilePosition.x) > playerUnit.meleeRange)
         {
             dialogueText.text = "The attack fails!";
@@ -288,10 +293,7 @@ public class BattleSystem : MonoBehaviour
     }
     public void OnAttackButton()
     {
-        if (state != BattleState.PLAYERTURN)
-        {
-            return;
-        }
+        if (state != BattleState.PLAYERTURN) return;
         DestroyMagicOptions();
         DestroyItemOptions();
         StartCoroutine(PlayerAttack());
@@ -299,10 +301,7 @@ public class BattleSystem : MonoBehaviour
 
     public void OnMagicButton()
     {
-        if (state != BattleState.PLAYERTURN)
-        {
-            return;
-        }
+        if (state != BattleState.PLAYERTURN) return;
         DestroyItemOptions();
         if (magicOptions == null)
             magicOptions = Instantiate(magicOptionsPrefab, magicBattleStation);
@@ -312,10 +311,7 @@ public class BattleSystem : MonoBehaviour
 
     public void OnHealButton()
     {
-        if (state != BattleState.PLAYERTURN)
-        {
-            return;
-        }
+        if (state != BattleState.PLAYERTURN) return;
         PlayerHeal();
     }
 
@@ -323,9 +319,7 @@ public class BattleSystem : MonoBehaviour
     {
         DisableButtons();
         MagicAttacks firemagicAttack = GameObject.Find("Fire").GetComponent<MagicAttacks>();
-        if (Mathf.Round(Mathf.Abs(playerChoosingTiles.entityTilePosition.x - enemyChoosingTiles.entityTilePosition.x)) > 1 || playerChoosingTiles.entityTilePosition != playerChoosingTiles.highlightedTilePosition)
-            playerChoosingTiles.entityHasMovedToHighlightedTile = false;
-        hasPlayerAttacked = false;
+        SetUpPlayerAttack();
 
         yield return new WaitUntil(() => playerChoosingTiles.entityHasMovedToHighlightedTile == true);
 
@@ -398,6 +392,7 @@ public class BattleSystem : MonoBehaviour
     //Instantiates the items in player's inventory on to the itemOptions
     public void InstantiateItems()
     {
+        Debug.Log(playerInventory.inventoryItems);
         if (playerInventory.inventoryItems.Capacity != 0)
         {
             foreach (Item i in playerInventory.inventoryItems)
@@ -419,15 +414,15 @@ public class BattleSystem : MonoBehaviour
         GameObject itemInOptions = Instantiate(itemButtonPrefab, itemBattleStation);
         RectTransform itemPosition = itemInOptions.GetComponent<RectTransform>();
         itemPosition.sizeDelta = new Vector2(itemWidth, itemHeight);
-        itemPosition.anchoredPosition = new Vector3(item1Posx, item1Posy - unitsAway, itemPosition.position.z);
         Text itemText = itemInOptions.GetComponentInChildren<Text>();
         Button itemButton = itemInOptions.GetComponent<Button>();
         itemText.text = i.itemName + "";
-        itemButton.onClick.AddListener(() => ItemFunction(itemInOptions, i)); //adds button using item function and ITEMBUTTONSCRIPT
+        itemButton.onClick.AddListener(delegate { ItemFunction(itemInOptions, i); }); //adds button using item function and ITEMBUTTONSCRIPT
     }
 
     public void ItemFunction(GameObject itemInOptions, Item i)
     {
+        Debug.Log("Button Pressed");
         switch (i.itemType)
         {
             case Item.Type.HEALING:

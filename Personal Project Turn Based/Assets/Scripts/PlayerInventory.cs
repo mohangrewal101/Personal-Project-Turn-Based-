@@ -6,6 +6,7 @@ public class PlayerInventory : MonoBehaviour
 {
     private UnitScript playerUnit;
     public List<Item> inventoryItems;
+    public Item healingItem;
     public Dictionary<Item, float> itemNumbers = new Dictionary<Item, float>();
     private Dictionary<string, float> itemStats = new Dictionary<string, float>();
 
