@@ -3,7 +3,7 @@ Turn-based project, based in Unity
 NOTES:
 
 General:
-- Enemy Stats UI and Player Stats UI are done, access it by clicking on the enemy or player
+- Enemy Stats UI and Player Stats UI are done, access it by clicking on the enemy or player (including moving health bars)
 - Items button is clickable, but no items have been made for the player inventory yet, it's still all being tested out so please ignore the inventory and items. 
 (You can look at the code I have been doing for it, but keep in mind that it is a work in progress)
 - Please ignore the other scene (for now I am not working on it)
@@ -11,8 +11,6 @@ General:
 - Everything else was drawn by me, including the tiles, Attack UI, Magic UI, Item UI, and Skeleton Stats UI
 
 Future Plans (in order of most importance to least important):
-- Organize code (halfway finished)
-- Have the health bars at the top become small icons above player and enemy heads
 - Work on adding items to the player's inventory and making them usable during battle
 - Add post-processing and lighting effects
 - Work on adding a random amount of enemies each time the player starts the game
