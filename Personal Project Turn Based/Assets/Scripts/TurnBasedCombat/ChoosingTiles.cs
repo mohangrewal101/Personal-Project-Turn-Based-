@@ -69,7 +69,6 @@ public abstract class ChoosingTiles : MonoBehaviour
         for (int i = 0; i < entity.transform.GetChildCount(); i++)
         {
             GameObject c = entity.transform.GetChild(i).gameObject;
-            Debug.Log(c.gameObject.name);
             Vector3 cScale = c.transform.localScale;
             cScale.x *= -1;
             c.transform.localScale = cScale;

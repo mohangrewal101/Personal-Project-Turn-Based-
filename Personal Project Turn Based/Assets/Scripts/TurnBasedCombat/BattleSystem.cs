@@ -392,7 +392,6 @@ public class BattleSystem : MonoBehaviour
     //Instantiates the items in player's inventory on to the itemOptions
     public void InstantiateItems()
     {
-        Debug.Log(playerInventory.inventoryItems);
         if (playerInventory.inventoryItems.Capacity != 0)
         {
             foreach (Item i in playerInventory.inventoryItems)
@@ -411,29 +410,42 @@ public class BattleSystem : MonoBehaviour
     //Initiliazes how item will look like in unity
     public void IntiliazeItem(Item i, float unitsAway)
     {
-        GameObject itemInOptions = Instantiate(itemButtonPrefab, itemBattleStation);
+        GameObject itemInOptions = null;
+        switch (i.itemType)
+        {
+            case Item.Type.HEALING:
+                itemInOptions = Instantiate(itemButtonPrefab, itemBattleStation.GetChild(0).GetChild(0));
+                break;
+            case Item.Type.BUFF:
+                itemInOptions = Instantiate(itemButtonPrefab, itemBattleStation.GetChild(0).GetChild(1));
+                break;
+            case Item.Type.ATTACK:
+                itemInOptions = Instantiate(itemButtonPrefab, itemBattleStation.GetChild(0).GetChild(2));
+                break;
+        }
         RectTransform itemPosition = itemInOptions.GetComponent<RectTransform>();
         itemPosition.sizeDelta = new Vector2(itemWidth, itemHeight);
         Text itemText = itemInOptions.GetComponentInChildren<Text>();
         Button itemButton = itemInOptions.GetComponent<Button>();
-        itemText.text = i.itemName + "";
+        itemText.text = i.itemName + " x" + playerInventory.itemNumbers[i];
         itemButton.onClick.AddListener(delegate { ItemFunction(itemInOptions, i); }); //adds button using item function and ITEMBUTTONSCRIPT
     }
 
     public void ItemFunction(GameObject itemInOptions, Item i)
     {
-        Debug.Log("Button Pressed");
         switch (i.itemType)
         {
             case Item.Type.HEALING:
-                playerUnit.Heal(i.itemPower);
-                playerHUD.SetHP(playerUnit.currentHP);
+                playerUnit.Heal(10);
                 break;
             case Item.Type.BUFF:
+                playerUnit.DefenseBuff(10);
                 break;
             case Item.Type.ATTACK:
+                enemyUnit.TakeDamage(10);
                 break;
         }
+        playerInventory.removeItem(i);
         Destroy(itemInOptions);
         Destroy(itemOptions);
         state = BattleState.ENEMYTURN;

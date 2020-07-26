@@ -3,6 +3,13 @@ using UnityEngine;
 
 public class UnitScript : MonoBehaviour
 {
+    [HideInInspector]
+    public float unitMagic;
+    [HideInInspector]
+    public float unitDefenseBuff;
+    [HideInInspector]
+    public float unitAttackBuff;
+
     public string unitName;
     public int unitLevel;
     public GameObject rangedAttackPrefab;
@@ -18,7 +25,7 @@ public class UnitScript : MonoBehaviour
 
     public bool TakeDamage(float dmg)
     {
-        currentHP -= dmg;
+        currentHP = currentHP - dmg;
         return currentHP <= 0;
     }
 
@@ -30,4 +37,10 @@ public class UnitScript : MonoBehaviour
             currentHP = 100;
         }
     }
+
+    public void DefenseBuff(float amount)
+    {
+        unitDefenseBuff = amount;
+    }
+
 }

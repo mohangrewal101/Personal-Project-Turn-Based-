@@ -13,6 +13,7 @@ public class Item : MonoBehaviour
 
     public string itemName;
 
+
     public float itemPower;
 
     public Type itemType;
@@ -21,6 +22,16 @@ public class Item : MonoBehaviour
 
     public Sprite itemIcon;
 
+    public Dictionary<string, int> itemStats = new Dictionary<string, int>();
+
+
+    public Item(string itemName, Type itemType, Dictionary<string, int> itemStats)
+    {
+        this.itemName = itemName;
+        this.itemType = itemType;
+        this.itemText = itemText;
+        this.itemStats = itemStats;
+    }
 
     // Start is called before the first frame update
     void Start()
