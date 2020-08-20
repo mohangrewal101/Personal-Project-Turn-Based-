@@ -42,8 +42,8 @@ public class PlayerInventory : MonoBehaviour
         addItem(healingItem);
         addItem(healingItem);
         //Ignore below two lines of code for now
-       // addItem(buffItem);
-       // addItem(attackItem);
+        addItem(buffItem);
+        addItem(attackItem);
     }
 
     //MODIFIES: this

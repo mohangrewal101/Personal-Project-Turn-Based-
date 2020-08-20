@@ -9,10 +9,14 @@ public class PlayerandEnemyStats : MonoBehaviour
     private UnitScript unit;
 
     private GameObject unitUIObject;
+    private GameObject unitEffectBubble;
 
     public GameObject statsPrefab;
+    public GameObject effectPrefab;
     public Transform unitBattleStation;
+    public Transform effectBattleStation;
     public Sprite unitSprite;
+    public Sprite effectSprite;
 
     // Start is called before the first frame update
     void Start()
@@ -33,8 +37,13 @@ public class PlayerandEnemyStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && unitUIObject)
-            DestroyObject(unitUIObject);
+        if (Input.GetMouseButtonDown(0) && unitUIObject) DestroyObject(unitUIObject);
+
+        if (unitEffectBubble == null && unit.buffTurnsLeft != 0)
+        {
+            unitEffectBubble = Instantiate(effectPrefab, effectBattleStation);
+            InstantiateEffectBubble();
+        }else if (unit.buffTurnsLeft == 0) DestroyObject(unitEffectBubble);
     }
 
     void InstantiateStats()
@@ -44,5 +53,10 @@ public class PlayerandEnemyStats : MonoBehaviour
         unitUIObject.transform.GetChild(2).gameObject.GetComponent<Text>().text = "Attack: " + unit.damage;
         unitUIObject.transform.GetChild(3).gameObject.GetComponent<Text>().text = "Lvl " + unit.unitLevel;
         unitUIObject.transform.GetChild(4).gameObject.GetComponent<Image>().sprite = unitSprite;
+    }
+
+    void InstantiateEffectBubble()
+    {
+        unitEffectBubble.transform.GetChild(1).gameObject.GetComponent<Image>().sprite = effectSprite;
     }
 }

@@ -5,33 +5,38 @@ using UnityEngine.Tilemaps;
 
 public abstract class ChoosingTiles : MonoBehaviour
 {
-    public bool isEntityMovingToHighlightedTile;
-    protected bool canHighlightTile;
+   // protected bool canHighlightTile;
     public bool isFacingOtherWay;
-    public bool entityHasMovedToHighlightedTile;
+  //  public bool entityHasMovedToHighlightedTile;
 
     public int tileTravelSpeed;
     public int numberofTilesToMoveOn;
     [HideInInspector]
     public int movementDirection;
 
+
     [HideInInspector]
-    public Vector3Int entityTilePosition;
-    [HideInInspector]
-    public Vector3Int highlightedTilePosition;
-    protected Vector3Int originalTilePostion;
+    
 
     protected Vector3 worldPoint;
 
 
     public Tilemap groundTilemap;
     public TileBase highlightedTile;
+    public TileBase highlightedAttackTile;
     public TileBase nonHighlightedTile;
-    public ChoosingTiles opposingChoosingTiles;
+   // public ChoosingTiles opposingChoosingTiles;
     public BattleSystem battleSystem;
-    protected GameObject entity;
+   // protected GameObject entity;
 
-    protected Transform entityTransform;
+   // protected Transform entityTransform;
+    protected GameObject currUnit;
+    public int minNumOfUnitsThatCanSpawn;
+    public int maxNumOfUnitsThatCanSpawn;
+    [HideInInspector]
+    public int numOfUnitsToSpawn;
+    [HideInInspector]
+    public List<GameObject> spawnedUnits = new List<GameObject>();
 
 
     //Highlights tile pointed to by mouse if it's not already highlighted anymore
@@ -43,7 +48,7 @@ public abstract class ChoosingTiles : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        entityHasMovedToHighlightedTile = true;
+        currUnit.GetComponent<Settings>().entityHasMovedToHighlightedTile = true;
         isFacingOtherWay = false;
         movementDirection = 1;
     }
@@ -63,23 +68,15 @@ public abstract class ChoosingTiles : MonoBehaviour
     //Flips all sprites
     protected void Flip()
     {
-        if (!entityHasMovedToHighlightedTile)
+        if (!currUnit.GetComponent<Settings>().entityHasMovedToHighlightedTile)
         isFacingOtherWay = false;
-        entityTransform.Rotate(0.0f, 180.0f, 0.0f);
-        for (int i = 0; i < entity.transform.GetChildCount(); i++)
+        currUnit.GetComponent<Settings>().entityTransform.Rotate(0.0f, 180.0f, 0.0f);
+        for (int i = 0; i < currUnit.GetComponent<Settings>().entity.transform.GetChildCount(); i++)
         {
-            GameObject c = entity.transform.GetChild(i).gameObject;
+            GameObject c = currUnit.GetComponent<Settings>().entity.transform.GetChild(i).gameObject;
             Vector3 cScale = c.transform.localScale;
             cScale.x *= -1;
             c.transform.localScale = cScale;
-/*            for (int j = 0; j < c.transform.GetChildCount(); j++)
-            {
-                GameObject c2 = c.transform.GetChild(j).gameObject;
-                Debug.Log(c2.gameObject.name);
-                Vector3 c2Scale = c2.transform.localScale;
-                c2Scale.x *= -1;
-                c2.transform.localScale = c2Scale;
-            }*/
         }
     }
 
@@ -88,28 +85,27 @@ public abstract class ChoosingTiles : MonoBehaviour
     // of the highlightd tile
     protected void UnHighlightTile()
     {
-        if (originalTilePostion != highlightedTilePosition)
+        if (currUnit.GetComponent<Settings>().originalTilePosition != currUnit.GetComponent<Settings>().highlightedTilePosition)
         {
-            groundTilemap.SetTile(originalTilePostion, nonHighlightedTile);
+            groundTilemap.SetTile(currUnit.GetComponent<Settings>().originalTilePosition, nonHighlightedTile);
         }
     }
 
     //Highlights tile if highlighted tile position is not the same as the given tilePosition
     protected void HighlightTheTile(Vector3Int tilePosition)
     {
-        if (highlightedTilePosition != tilePosition)
+        if (currUnit.GetComponent<Settings>().highlightedTilePosition != tilePosition)
         {
-            highlightedTilePosition = tilePosition;
-            groundTilemap.SetTile(highlightedTilePosition, highlightedTile);
+            currUnit.GetComponent<Settings>().highlightedTilePosition = tilePosition;
+            groundTilemap.SetTile(currUnit.GetComponent<Settings>().highlightedTilePosition, highlightedTile);
         }
     }
 
     //Resets everything once highlighted tile is reached
     protected void MovingToTiles()
     {
-        entityTilePosition = new Vector3Int(highlightedTilePosition.x, highlightedTilePosition.y, highlightedTilePosition.z);
+        currUnit.GetComponent<Settings>().entityTilePosition = new Vector3Int(currUnit.GetComponent<Settings>().highlightedTilePosition.x, currUnit.GetComponent<Settings>().highlightedTilePosition.y, currUnit.GetComponent<Settings>().highlightedTilePosition.z);
         UnHighlightTile();
-        isEntityMovingToHighlightedTile = false;
-        entityHasMovedToHighlightedTile = true;
+        currUnit.GetComponent<Settings>().entityHasMovedToHighlightedTile = true;
     }
 }

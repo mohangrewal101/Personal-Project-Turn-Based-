@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-class TextFadeOut : MonoBehaviour
+public class TextFadeOut : MonoBehaviour
 {
     //Fade time in seconds
     public float fadeOutTime;
