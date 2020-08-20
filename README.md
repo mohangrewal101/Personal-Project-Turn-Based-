@@ -11,7 +11,7 @@ General:
 - Everything else was drawn by me, including the tiles, Attack UI, Magic UI, Item UI, and Skeleton Stats UI
 
 Future Plans (in order of most importance to least important):
-- Work on adding items to the player's inventory and making them usable during battle
+- Add different types of items to the inventory, make an enemy inventory
 - Add post-processing and lighting effects
 - Work on adding a random amount of enemies each time the player starts the game
 - Work on more enemies to add to the game
