@@ -11,9 +11,8 @@ General:
 - Everything else was drawn by me, including the tiles, Attack UI, Magic UI, Item UI, and Skeleton Stats UI
 
 Future Plans (in order of most importance to least important):
-- Add different types of items to the inventory, make an enemy inventory
-- Add post-processing and lighting effects
-- Work on adding a random amount of enemies each time the player starts the game
+- Make player choose and attack an enemy
+- Highlight how far a unit can go with their movement
 - Work on more enemies to add to the game
 - Add an animation for the Player Fire Animation
 - Work on more player entities to add to the game
@@ -22,4 +21,5 @@ Future Plans (in order of most importance to least important):
 
 On Hiatus (in other words it's not currently being worked on):
 - The Out-Of-Battle scene
+- Inventory System (Need to figure out how to use it in conjunction with the battle system so please ignore the Items button when playing the game)
 
